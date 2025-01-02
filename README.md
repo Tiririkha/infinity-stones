@@ -1,1 +1,7 @@
-"# infinity-stones" 
+# Infinity Stones
+
+## Installation
+
+```bash
+pip install infinitystones
+```
