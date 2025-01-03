@@ -28,11 +28,10 @@ class UseWhatsAppTimedNotification(UseTimedNotification):
             return sender
         except InvalidPhoneNumberIDError as e:
             logger.error(f"Phone number validation failed: {str(e)}")
-            logger.error("Failed to initialize WhatsApp sender - check your phone number ID value")
+            raise InvalidPhoneNumberIDError("Failed to initialize WhatsApp sender - check your phone number ID value")
         except InvalidWhatsAppTokenError as e:
             logger.error(f"Token validation failed: {str(e)}")
-            logger.error("Failed to initialize WhatsApp sender - check your token value")
+            raise InvalidWhatsAppTokenError("Failed to initialize WhatsApp sender - check your token value")
         except WhatsAppAPIError as e:
             logger.error(f"WhatsApp API error: {str(e)}")
-            logger.error("Failed to initialize WhatsApp sender, check your token and phone number ID values")
-
+            raise WhatsAppAPIError("Failed to initialize WhatsApp sender, check your token and phone number ID values")

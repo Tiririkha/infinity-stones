@@ -95,7 +95,7 @@ class ScheduledNotification(BaseModel):
     scheduled_time: str = Field(..., description="ISO 8601 format with timezone")
     local_scheduled_time: Optional[str] = None
     recipient_timezone: str
-    wa: Optional[WhatsAppSender] = None
+    wa: Optional[dict] = None
     webhook_url: Optional[str] = None
     status: Optional[str] = None
     metadata: Dict = Field(default=dict)

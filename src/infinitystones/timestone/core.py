@@ -1,6 +1,6 @@
 from infinitystones.timestone.config import config
 from typing import List, Optional, Dict, Union
-from datetime import datetime
+from datetime import datetime, timedelta
 from .client import TimestoneClient
 from .models import (
     ScheduledNotification,
@@ -37,7 +37,7 @@ class TimestoneCore(TimestoneClient):
             content: str,
             scheduled_time: Union[str, datetime],
             recipient_timezone: str,
-            wa: Optional[WhatsAppSender] = None,
+            wa: Optional[dict] = None,
             webhook_url: Optional[str] = None,
             subject: Optional[str] = None,
             recipient_email: Optional[str] = None,
@@ -53,12 +53,12 @@ class TimestoneCore(TimestoneClient):
             "content": content,
             "scheduled_time": scheduled_time,
             "recipient_timezone": recipient_timezone,
-            "subject": subject,
-            "wa": wa or {},
-            "webhook_url": webhook_url,
-            "recipient_email": recipient_email,
-            "recipient_phone": recipient_phone,
-            "metadata": metadata or {}
+            "subject": subject or None,
+            "wa": wa or None,
+            "webhook_url": webhook_url or None,
+            "recipient_email": recipient_email or None,
+            "recipient_phone": recipient_phone or None,
+            "metadata": metadata or None
         }
         response = self._request("POST", "/notifications/", json=data)
         return ScheduledNotification(**response)
@@ -106,7 +106,6 @@ class TimestoneCore(TimestoneClient):
 
     @staticmethod
     def notifyAT(
-            self,
             year: int,
             month: int,
             day: int,
@@ -115,7 +114,10 @@ class TimestoneCore(TimestoneClient):
             second: Optional[int] = 0,
             microsecond: Optional[int] = 0,
     ) -> str:
-        """Convert a datetime to ISO 8601 format."""
-        return datetime(
-            year, month, day, hour, minute, second, microsecond
-        ).astimezone().isoformat()
+        """Convert a datetime to ISO 8601 format if it's at least 1 minute ahead of current time."""
+        notify_time = datetime(year, month, day, hour, minute, second, microsecond)
+        current_time = datetime.now()
+
+        if notify_time > current_time + timedelta(minutes=1):
+            return notify_time.astimezone().isoformat()
+        raise ValueError("Notification time must be at least 1 minute ahead of current time")
