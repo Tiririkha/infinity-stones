@@ -18,10 +18,10 @@ whatsapp_sender.initialize()
 # Create a notification
 notification = client.create_timed_notification(
     notification_type=TimedNotificationType.EMAIL,
-    subject="Email test chat",
-    content="Am notifying this through email",
-    scheduled_time=TimestoneCore.notifyAT(2025, 1, 3, 6, 21),
-    # wa=whatsapp_sender.get_json(),
+    subject="Sending some emails for testing",
+    content="Hello, this is a test message",
+    scheduled_time=TimestoneCore.notifyAT(2025, 1, 3, 6, 48),
+    wa=whatsapp_sender.get_json(),
     recipient_phone="255747955454",
     webhook_url="https://webhook.site/be95f500-1545-4c38-bc55-fc469578dc8d",
     recipient_email="maverickweyunga@gmail.com",

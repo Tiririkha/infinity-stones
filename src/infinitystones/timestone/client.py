@@ -1,4 +1,5 @@
 from typing import Any, Dict, Optional, List
+import logging
 import requests
 from .config import TimestoneConfig
 from .exceptions import (
@@ -8,6 +9,7 @@ from .exceptions import (
     TimestoneNotFoundError
 )
 
+logger = logging.getLogger(__name__)
 
 class TimestoneClient:
     def __init__(
