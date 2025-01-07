@@ -1,18 +1,36 @@
-import os
-from pydantic import BaseModel, Field
-from dotenv import load_dotenv
-from infinitystones.config import config
+from typing import Optional
 
-load_dotenv()
+from pydantic import BaseModel
 
 
 class TimestoneConfig(BaseModel):
-    api_key: str = Field(default_factory=lambda: os.getenv("TIMESTONE_API_KEY", ""))
-    base_url: str = Field(
-        default=config.TIMESTONE_URL,
-        description="Base URL for Timestone API"
-    )
-    timeout: int = Field(default=30, description="Request timeout in seconds")
+    """Configuration for Timestone client"""
 
-    class Config:
-        frozen = True
+    api_key: str
+    base_url: str
+    timeout: int
+    max_retries: int = 1
+    retry_backoff: float = 1.0
+    pool_connections: int = 10
+    pool_maxsize: int = 10
+
+    @classmethod
+    def from_settings(cls, api_key: Optional[str] = None) -> "TimestoneConfig":
+        """Create config from global settings"""
+        from infinitystones.config import settings
+
+        return cls(
+            api_key=api_key or settings.API_KEY,
+            base_url=settings.BASE_URL,
+            timeout=settings.TIMEOUT,
+            max_retries=settings.MAX_RETRIES,
+            retry_backoff=settings.RETRY_BACKOFF,
+            pool_connections=settings.POOL_CONNECTIONS,
+            pool_maxsize=settings.POOL_MAXSIZE,
+        )
+
+    def update(self, **kwargs) -> None:
+        """Update config values"""
+        for key, value in kwargs.items():
+            if hasattr(self, key):
+                setattr(self, key, value)

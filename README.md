@@ -11,12 +11,9 @@ A Python package providing powerful tools for real-world development challenges.
 TimeStone is a notification scheduling and delivery system supporting:
 
 - Email notifications
-- SMS notifications  
-- WhatsApp messages
 - Webhook integration
 - Custom metadata
 - Timezone handling
-- Bulk operations
 
 ### Installation
 
@@ -27,43 +24,41 @@ pip install infinitystones
 ### Quick Start
 
 ```python
-from infinitystones.timestone import TimestoneCore, TimedNotificationType
-from infinitystones.timestone.timed_notifications import UseWhatsAppTimedNotification
-from infinitystones.timestone import TimestoneCore, TimedNotificationType
+from infinitystones.timestone.services.notifications import NotificationService
+from infinitystones.timestone.models.enums import NotificationType
 
-# Initialize client
-client = TimestoneCore()
+# Initialize services
+notification_service = NotificationService()
 
-# Schedule an email notification
-client.create_timed_notification(
-    notification_type=TimedNotificationType.EMAIL,
-    content="Meeting in 1 hour!",
-    scheduled_time="2024-01-03T15:00:00Z",
-    recipient_timezone="UTC",
-    recipient_email="user@example.com"
-)
 
-# We can schedule whatsapp notifications as well
+def send_welcome_email():
+    """Example: Creating and using a template for welcome emails"""
 
-# Create a WhatsApp sender
-whatsapp_sender = UseWhatsAppTimedNotification(
-    wa_token="wa_token",
-    wa_phone_number_id="wa_phone_number_id"
-)
+    # 1. Schedule welcome email using the template
+    notification = notification_service.create_notification(
+        notification_type=NotificationType.EMAIL,
+        subject="Welcome to Timestone",
+        template="""
+            <html>
+                <body>
+                    <h1>Welcome to Timestone, Eric!</h1>
+                    <p>Thank you for joining our platform welcome so much.</p>
+                </body>
+            </html>
+        """,
+        recipient_email="maverickweyunga@gmail.com",
+        scheduled_time=notification_service.schedule_for(2025, 1, 7, 3, 6),
+        recipient_timezone="Africa/Dar_es_Salaam"
+    )
 
-# Initialize whatsapp sender
-whatsapp_sender.initialize()
+    print(f"Scheduled welcome email: {notification.id}")
+    return notification
 
-# Configure WhatsApp message
-client.create_timed_notification(
-    notification_type=TimedNotificationType.WHATSAPP,
-    content="Meeting reminder",
-    scheduled_time="2024-01-03T15:00:00Z",
-    recipient_timezone="Africa/Dar_es_Salaam",
-    recipient_phone="1234567890",
-    wa=whatsapp_sender.get_json()
-)
 
+if __name__ == "__main__":
+    # Example 1: Send welcome email
+    welcome_notification = send_welcome_email()
+    print(welcome_notification)
 
 ```
 
