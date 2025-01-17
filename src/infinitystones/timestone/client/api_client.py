@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 from infinitystones.timestone.config.settings import Settings
 from infinitystones.timestone.utils.time_utils import get_future_time
@@ -5,7 +7,7 @@ from .exceptions import TimestoneAPIError
 
 
 class TimestoneClient:
-    def __init__(self, base_url=None, auth_token=None, phone_number_id=None):
+    def __init__(self, base_url: str =None, auth_token: str =None, phone_number_id: str =None):
         self.settings = Settings()
         self.base_url = base_url or self.settings.BASE_URL
         self.auth_token = auth_token
@@ -17,7 +19,7 @@ class TimestoneClient:
         if not self.phone_number_id:
             raise ValueError("WhatsApp phone number ID not configured")
 
-    def schedule_message(self, phone_number, message_data, schedule_time=None):
+    def schedule_message(self, phone_number: str, message_data: dict[str, str], schedule_time: datetime =None):
         """Schedule a WhatsApp message"""
         if schedule_time is None:
             schedule_time = get_future_time(minutes=2)

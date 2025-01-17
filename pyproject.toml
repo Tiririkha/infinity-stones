@@ -4,11 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "infinitystones"
-version = "0.1.2"
+version = "0.1.3"
 authors = [
     { name = "Eric Kweyunga", email = "maverickweyunga@gmail.com" },
 ]
-description = "Python package for data operations using Marvel's Infinity Stones concept"
+description = "Python package for data operations using Infinity Stones concept"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
