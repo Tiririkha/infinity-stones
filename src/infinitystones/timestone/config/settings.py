@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class Settings:
-    BASE_URL: str = os.getenv('TIMESTONE_BASE_URL', 'http://127.0.0.1:8080')
+    BASE_URL: str = os.getenv('TIMESTONE_BASE_URL', 'https://seal-app-gdyzc.ondigitalocean.app')
     TIMEZONE: str = os.getenv('TIMEZONE', 'Africa/Dar_es_Salaam')
 
     def __post_init__(self):
