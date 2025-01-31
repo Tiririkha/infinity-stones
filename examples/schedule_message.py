@@ -15,7 +15,7 @@ def main():
     )
 
     # Test message details
-    phone_number = "255747955454"
+    phone_number = "255**"
     message = {
         "type": "text",
         "text": {
