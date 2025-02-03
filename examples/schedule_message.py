@@ -5,7 +5,9 @@ from infinitystones.timestone.client.exceptions import TimestoneAPIError
 from infinitystones.timestone.utils.time_utils import get_future_time
 
 from dotenv import load_dotenv
+
 load_dotenv()
+
 
 def main():
     # Initialize client
@@ -15,11 +17,25 @@ def main():
     )
 
     # Test message details
-    phone_number = "255**"
+    phone_number = "255747955454"
     message = {
-        "type": "text",
-        "text": {
-            "body": "Habari Eric, hii ni jaribio la ujumbe wa WhatsApp kutoka kwa Infinity Stones"
+        "type": "template",
+        "template": {
+            "name": "test_mobi_ad_soka",
+            "language": {
+                "code": "sw"
+            },
+            "components": [
+                {
+                    "type": "body",
+                    "parameters": [
+                        {
+                            "type": "text",
+                            "text": "2025/03/30"
+                        }
+                    ]
+                }
+            ]
         }
     }
 
@@ -28,7 +44,7 @@ def main():
         result = client.schedule_message(
             phone_number=phone_number,
             message_data=message,
-            schedule_time=get_future_time(minutes=50)
+            schedule_time=get_future_time(minutes=0.1)
         )
         print("Schedule Result:", json.dumps(result, indent=2))
 
@@ -36,6 +52,7 @@ def main():
         print(f"API Error: {e}")
     except Exception as e:
         print(f"Unexpected error: {e}")
+
 
 if __name__ == "__main__":
     main()
